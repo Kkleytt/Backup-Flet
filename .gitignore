@@ -1,11 +1,11 @@
-venv/
-.idea/
-__pycache__/
+/venv/
+/.idea/
+/__pycache__/
 misc/Image/admin
 misc/Image/app
 misc/Image/refactor
 misc/Image/sign
 misc/data/session.json
 .env
-ТЗ.docx
+*.docx
 .gitignore
