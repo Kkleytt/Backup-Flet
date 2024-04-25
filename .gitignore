@@ -1,0 +1,8 @@
+venv/
+misc/Image/admin
+misc/Image/app
+misc/Image/refactor
+misc/Image/sign
+misc/data/session.json
+.env
+.docx

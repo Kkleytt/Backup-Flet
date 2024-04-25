@@ -1,0 +1,18 @@
+{
+    "pressets": [
+        "TEST-8",
+        "TEST-2"
+    ],
+    "TEST-8": {
+        "files": [
+            "HUI"
+        ],
+        "ignore": []
+    },
+    "TEST-2": {
+        "files": [
+            "HUI"
+        ],
+        "ignore": []
+    }
+}
