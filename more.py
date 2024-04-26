@@ -51,6 +51,7 @@ async def start_backup(input_files, name, type, compression, password, ignore_fi
         os.remove('ignored_files_list.txt')
         return True
     except Exception as ex:
+        print(f'Error in module "start_backup": {ex}')
         return False
 
 
@@ -82,6 +83,7 @@ def delete_user(user=-1, host=None, user_db=None, password=None, name=None):
                 connection.close()
             error2 = ""
         except Exception as ex:
+            print(f'Error in module "delete_user": {ex}')
             error2 = f"Error - {ex}\n"
         error3 = ""
     else:
@@ -110,7 +112,7 @@ def delete_table(table='None', host=None, user=None, password=None, name=None):
             finally:
                 connection.close()
         except Exception as ex:
-            print(f'Error - {ex}')
+            print(f'Error in module "delete_table": {ex}')
     else:
         print('Cancel operation MySQL')
 
@@ -150,6 +152,7 @@ def reset_data(code_1=None, code_2=None, verify=True, connection=False):
                     pass
             error2 = "ALL USER DATA HAS BEEN RESET\n"
         except Exception as ex:
+            print(f'Error in module "reset_data": {ex}')
             error2 = f'Error in working with database - {ex}\n'
         finally:
             error3 = ""
@@ -182,27 +185,31 @@ async def connect_to_db():
         )
         return connection
     except Exception as ex:
+        print(f'Error in module "connect_to_db": {ex}')
         return ex
 
 
 async def create_email(mail, code, user, colors):
-    from jinja2 import Template
+    try:
+        from jinja2 import Template
 
-    template_content = open('misc\\html\\index.html', 'r', encoding='utf-8').read()
-    template = Template(template_content)
-    numbers_code = [int(num) for num in code]
-    html_content = template.render(User=user,
-                                   Number_1=numbers_code[0],
-                                   Number_2=numbers_code[1],
-                                   Number_3=numbers_code[2],
-                                   Number_4=numbers_code[3],
-                                   Number_5=numbers_code[4],
-                                   Number_6=numbers_code[5],
-                                   Color_0=colors[0],
-                                   Color_1=colors[1],
-                                   Color_2=colors[2],
-                                   Color_3=colors[3],)
-    await send_email(mail, html_content)
+        template_content = open('misc\\html\\index.html', 'r', encoding='utf-8').read()
+        template = Template(template_content)
+        numbers_code = [int(num) for num in code]
+        html_content = template.render(User=user,
+                                       Number_1=numbers_code[0],
+                                       Number_2=numbers_code[1],
+                                       Number_3=numbers_code[2],
+                                       Number_4=numbers_code[3],
+                                       Number_5=numbers_code[4],
+                                       Number_6=numbers_code[5],
+                                       Color_0=colors[0],
+                                       Color_1=colors[1],
+                                       Color_2=colors[2],
+                                       Color_3=colors[3],)
+        await send_email(mail, html_content)
+    except Exception as ex:
+        print(f'Error in module "create_email": {ex}')
 
 
 async def send_email(mail, html_code):
@@ -211,13 +218,14 @@ async def send_email(mail, html_code):
     import os
     from dotenv import load_dotenv, find_dotenv
 
-    load_dotenv(find_dotenv())
-
-    sender = os.getenv("MAIL_LOGIN")
-    password = os.getenv("MAIL_PASSWORD")
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
     try:
+        load_dotenv(find_dotenv())
+
+        sender = os.getenv("MAIL_LOGIN")
+        password = os.getenv("MAIL_PASSWORD")
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+
         server.login(sender, password)
         msg = MIMEText(html_code, "html")
         msg["From"] = 'Backup-Flet code verify'
@@ -232,23 +240,27 @@ async def send_email(mail, html_code):
 
 
 def check_version():
-    version = "1.0-alpha"
-    date = "19-04-2024"
-    new = ['data.py', 'app.py', 'admin.py', 'sign.py', 'more.py', 'refactor.py', 'instruction.json']
-    info = [
-        'Сделана программа для входа в систему',
-        'Сделано основное окно программы',
-        'Сделана программа дял администрирования БД',
-        'Сделана программа для редактирования прессетов',
-        'Была созданная инструкция'
-    ]
-    result = {
-        "version": version,
-        "date": date,
-        "new": new,
-        "info": info
-    }
-    return result
+    try:
+        version = "1.0-alpha"
+        date = "19-04-2024"
+        new = ['data.py', 'app.py', 'admin.py', 'sign.py', 'more.py', 'refactor.py', 'instruction.json']
+        info = [
+            'Сделана программа для входа в систему',
+            'Сделано основное окно программы',
+            'Сделана программа дял администрирования БД',
+            'Сделана программа для редактирования прессетов',
+            'Была созданная инструкция'
+        ]
+        result = {
+            "version": version,
+            "date": date,
+            "new": new,
+            "info": info
+        }
+        return result
+    except Exception as ex:
+        print(f'Error in module "check_version" - {ex}')
+        return False
 
 
 async def main():
