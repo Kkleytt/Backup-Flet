@@ -1,7 +1,0 @@
-Version: 1.0-beta
-CompanyName: KKMT
-FileDescription: Backup-Flet
-InternalName: Backup-Flet
-LegalCopyright: © KKMT. All rights reserved.
-OriginalFilename: App.exe
-ProductName: Backup-Flet
