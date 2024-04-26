@@ -161,6 +161,8 @@ def reset_data(code_1=None, code_2=None, verify=True, connection=False):
 
 
 async def connect_to_db():
+    from pymysql import cursors
+
     load_dotenv(find_dotenv())
 
     HOST = os.getenv("DB_HOST")
@@ -218,14 +220,15 @@ async def send_email(mail, html_code):
     try:
         server.login(sender, password)
         msg = MIMEText(html_code, "html")
-        msg["From"] = 'PyGame Develop'
+        msg["From"] = 'Backup-Flet code verify'
         msg["To"] = mail
         msg["Subject"] = "Код подтверждения"
         server.sendmail(sender, mail, msg.as_string())
         server.quit()
-        return "Message was sent sucsess"
-    except Exception as _ex:
-        return f"{_ex}\nCheck your data, please!"
+        return True
+    except Exception as ex:
+        print(f'Error in module "send_email" - {ex}')
+        return False
 
 
 def check_version():
