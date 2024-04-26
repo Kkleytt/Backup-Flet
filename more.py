@@ -249,7 +249,7 @@ def check_version():
 
 
 async def main():
-    print("TEST")
+    print(await connect_to_db())
 
 
 if __name__ == '__main__':
