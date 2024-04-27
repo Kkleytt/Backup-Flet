@@ -717,10 +717,10 @@ async def sign_app(page: ft.Page):
                     ft.Icon(ft.icons.WIFI_SHARP, color=error_color_1, size=200)
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 ft.Row([
-                    ft.Text("Нет интернет соединения", size=35, color=color_3, font_family="Bold"),
+                    ft.Text("Нет интернет соединения", size=40, color=color_3, font_family="SemiBold"),
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 ft.Row([
-                    ft.Text("попробуйте позже или нажмите", size=20, color=color_2, font_family="SemiBold"),
+                    ft.Text("попробуйте позже или нажмите", size=22, color=color_2, font_family="SemiBold"),
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 ft.Row([
                     ft.Container(height=20)
