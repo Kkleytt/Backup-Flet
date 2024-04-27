@@ -687,15 +687,16 @@ async def sign_app(page: ft.Page):
 
     async def check_ethernet(e, status=True):
         try:
-            socket.create_connection(("www.google.com", 80))
             if not status:
-                return True
+                return False
             else:
                 nonlocal connection
-
                 try:
                     connection = await more.connect_to_db()
-                    await log_in(e)
+                    if connection:
+                        return True
+                    else:
+                        return False
                 except:
                     return False
         except OSError:
@@ -705,6 +706,10 @@ async def sign_app(page: ft.Page):
             print(f'Error in module "check_ethernet" - {ex}')
 
     async def no_ethernet(e):
+        async def reconnect(e):
+            if await check_ethernet(page):
+
+                await log_in(page)
         try:
             await page.clean_async()
             await page.add_async(
@@ -712,17 +717,17 @@ async def sign_app(page: ft.Page):
                     ft.Icon(ft.icons.WIFI_SHARP, color=error_color_1, size=200)
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 ft.Row([
-                    ft.Text("Нет интернет соединения", size=35, color=color_3)
+                    ft.Text("Нет интернет соединения", size=35, color=color_3, font_family="Bold"),
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 ft.Row([
-                    ft.Text("попробуйте позже или нажмите", size=20, color=color_2)
+                    ft.Text("попробуйте позже или нажмите", size=20, color=color_2, font_family="SemiBold"),
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 ft.Row([
                     ft.Container(height=20)
                 ]),
                 ft.Row([
                     ft.ElevatedButton(width=200, height=60, color=error_color_2, bgcolor=error_color_1,
-                                      on_click=check_ethernet, content=ft.Text('Повторить', size=20)),
+                                      on_click=reconnect, content=ft.Text('Повторить', size=25, font_family="Bold")),
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 ft.Row([
                     ft.Container(height=90)
@@ -795,7 +800,7 @@ async def sign_app(page: ft.Page):
         page.theme = ft.theme.Theme(color_scheme=ft.ColorScheme(primary=color_2, secondary=color_3))
         page.bgcolor = background_color
 
-        if await check_ethernet(page, False):
+        if await check_ethernet(page, True):
             connection = await more.connect_to_db()
             await log_in(page)
         else:

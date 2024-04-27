@@ -181,12 +181,13 @@ async def connect_to_db():
             user=USER,
             password=PASSWORD,
             database=DB_NAME,
-            cursorclass=pymysql.cursors.DictCursor
+            cursorclass=pymysql.cursors.DictCursor,
+            connect_timeout=10,
         )
         return connection
     except Exception as ex:
         print(f'Error in module "connect_to_db": {ex}')
-        return ex
+        return False
 
 
 async def create_email(mail, code, user, colors):
