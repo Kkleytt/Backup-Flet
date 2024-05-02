@@ -3,7 +3,6 @@ import flet as ft
 import json as js
 import re
 import random
-import socket
 
 import more
 
